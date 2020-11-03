@@ -162,3 +162,39 @@ Simply run `npm run lint`
 
 1. Run `npm start`
 1. To break out of the server, press `ctrl` + `c`
+
+Towers of Hanoi plan
+
+Move a piece- pop from one column to another
+
+legal move- smallest piece is 1 biggest piece is 4 base is 0
+
+so to make a legal move the base has to be less than the piece your moving.  This makes it always put a smaller piece
+on top of a bigger piece.  The biggest piece would = 1 and the base would = 0.
+check for win- This function should run after every move. It should also compare a winning set (array) to the current set (array). If it matches, then you win and a alert pops up notifying user. If not, then it allows next move.
+
+Towers of Hanoi- main function that iterates throught the other functions legal move move a piece check for win if no win then allow another move
+
+Towers of Hanoi plan
+
+Move a piece-
+    pop from one column to another
+
+legal move- 
+    smallest piece is 1
+    biggest piece is  4
+    base is           0
+
+    so to make a legal move the base has to be less than the piece your moving.  This makes it always put a smaller piece
+    on top of a bigger piece.  The biggest piece would = 1 and the base would = 0.
+
+check for win-
+    This function should run after every move.  It should also compare a winning set (array) to the current set (array).  If it 
+    matches, then you win and a alert pops up notifying user.  If not, then it allows next move.
+
+Towers of Hanoi- 
+    main function that iterates throught the other functions
+        legal move
+        move a piece
+        check for win
+        if no win then allow another move
