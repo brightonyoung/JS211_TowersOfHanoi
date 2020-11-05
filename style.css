@@ -263,8 +263,9 @@ input[readonly]:focus + input + input + input:checked ~ .c {
 }
 
 /* Winning */
+
 .win {
-    z-index: 5;
+    z-index: 10;
     position: absolute;
     left: 0;
     right: 0;
