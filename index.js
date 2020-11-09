@@ -1,42 +1,105 @@
-// * This js file is incomplete. It will log to the console the elements you click
-    // call another function and set stone. You will have to work through the logic
-    // of the game as you know it from building it in the terminal. Work through the
-    // puzzle slowly, stepping through the flow of logic, and making the game work.
-    // Have fun!!
-// * First run the program in your browser with live server and double-click on the row you'd like to select an element from.
-// * Why are you get a warning in your console? Fix it.
-// * Delete these comment lines!
+let win = false;
+let stone = null;
+const a = document.getElementById("bottom-row")
+const b = document.getElementById("middle-row")
+const c = document.getElementById("top-row")
+const selectionBox = document.getElementById("selection-box")
+let numOfMoves = document.getElementById("numOfMoves")
+const stoneOne = document.getElementById("1")
+const stoneTwo = document.getElementById("2")
+const stoneThree = document.getElementById("3")
+const stoneFour = document.getElementById("4")
+let currentStoneSize;
+let lastStoneSize;
+let startingSize = parseInt(c.childElementCount)
+let numberOfMoves = 0;
+let stoneSelection = null;
 
-const stone = null
+const checkForWin = () => {
+  if (a.childElementCount == startingSize || b.childElementCount == startingSize) {
+    setTimeout(function() {
+      if (numberOfMoves === 15) {
+        alert("You Win! That's a perfect score!")
+        document.getElementById("resetButton").style.visibility = "visible";
+      } else {
+        alert("You Win! But it can be done with less moves. See if you can do beter.")
+      }
+    }, 500)
+    win = true;
+  }
+}
 
-// this function is called when a row is clicked. 
-// Open your inspector tool to see what is being captured and can be used.
 const selectRow = (row) => {
-  const currentRow = row.getAttribute("data-row")
-  
-  console.log("Yay, we clicked an item", row)
-  console.log("Here is the stone's id: ", row.id)
-  console.log("Here is the stone's data-size: ", currentRow)
-
-  pickUpStone(row.id)
+  // const currentRow = row.getAttribute("data-row")
+  const selectedRow = row.id;
+  const selectedRowID = document.getElementById(selectedRow)
+  console.log("selected Row " + selectedRow)
+  console.log("There are stones to pickup = " + row.hasChildNodes())
+  if (row.hasChildNodes() && !stone) {
+    pickUpStone(selectedRow)
+  } else if (row.hasChildNodes() && stone) {
+    lastStoneSize = parseInt(selectedRowID.lastElementChild.getAttribute("data-size"))
+    console.log("lastStoneSize" + lastStoneSize)
+    if (lastStoneSize > currentStoneSize) {
+      dropStone(selectedRow, stone)
+      stone = null
+    } else {
+      console.log("illegal Move")
+      console.log((lastStoneSize > currentStoneSize))
+      console.log(lastStoneSize)
+      console.log(currentStoneSize)
+    }
+  } else if (stone) {
+    dropStone(selectedRow, stone)
+    stone = null
+    
+  }
 } 
 
-// this function can be called to get the last stone in the stack
-// but there might be something wrong with it...
+// stone = selectedRow.removeChild(selectedRow.lastElementChild);
+
 const pickUpStone = (rowID) => {
+  console.log("stone picked up")
   const selectedRow = document.getElementById(rowID);
-  stone = selectedRow.removeChild(selectedRow.lastChild);
-  console.log(stone)
+  stone = selectedRow.removeChild(selectedRow.lastElementChild);
+  selectionBox.appendChild(stone)
+  currentStoneSize = parseInt(stone.getAttribute('data-size'))
+  if (selectedRow.lastElementChild != null) {
+    lastStoneSize = parseInt(selectedRow.lastElementChild.getAttribute("data-size"))
+  } else {
+    document.getElementById(rowID).innerHTML = null;
+  }
+  console.log("current stone size: " + currentStoneSize)
+  console.log("Last Stone Size " + lastStoneSize)
+  
+  lastStoneSize = null;
+  // console.log(selectedRow.lastElementChild.getAttribute("data-size"))
+  // console.log(stone)
 }
 
-// You could use this function to drop the stone but you'll need to toggle between pickUpStone & dropStone
-// Once you figure that out you'll need to figure out if its a legal move...
-// Something like: if(!stone){pickupStone} else{dropStone}
+
 
 const dropStone = (rowID, stone) => {
+  console.log("stone dropped")
+  numberOfMoves++
+  numOfMoves.innerHTML = `Moves: ${numberOfMoves}`
   document.getElementById(rowID).appendChild(stone)
-  stone = null
+  // console.log("dropped")
+  if (document.getElementById(rowID) === "bottom-row") {
+    movePiece()
+  }
+  currentStoneSize = null;
+ 
+  checkForWin();
 }
 
-// * Remember you can use your logic from 'main.js' to maintain the rules of the game. But how? Follow the flow of data just like falling dominoes.
-
+const resetBoard = () => {
+  numOfMoves.innerHTML = "Moves: 0"
+  numberOfMoves = 0;
+  a.innerHTML = null
+  b.innerHTML = null
+  c.appendChild(stoneFour)
+  c.appendChild(stoneThree)
+  c.appendChild(stoneTwo)
+  c.appendChild(stoneOne)
+}
